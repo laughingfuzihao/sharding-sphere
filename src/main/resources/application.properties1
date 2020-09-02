@@ -1,0 +1,20 @@
+spring.main.allow-bean-definition-overriding=true
+
+spring.shardingsphere.datasource.names=ds1
+
+spring.shardingsphere.datasource.ds1.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds1.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds1.url=jdbc:mysql://127.0.0.1:3306/sharding_1?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds1.username=root
+spring.shardingsphere.datasource.ds1.password=gwssi
+
+spring.shardingsphere.sharding.tables.user.actual-data-nodes=ds1.user_$->{1..2}
+
+
+
+spring.shardingsphere.sharding.tables.user.key-generator.column=id
+spring.shardingsphere.sharding.tables.user.key-generator.type=SNOWFLAKE
+
+
+spring.shardingsphere.sharding.tables.user.table-strategy.inline.sharding-column=id
+spring.shardingsphere.sharding.tables.user.table-strategy.inline.algorithm-expression=user_$->{id % 2 + 1}
