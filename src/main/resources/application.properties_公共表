@@ -1,0 +1,50 @@
+# 垂直分库
+# 一个实体类可对应两张表
+spring.main.allow-bean-definition-overriding=true
+# sharding 多数据源配置
+spring.shardingsphere.datasource.names=ds1,ds2
+
+# ds1 user库
+spring.shardingsphere.datasource.ds1.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds1.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds1.url=jdbc:mysql://127.0.0.1:3306/sharding_1?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds1.username=root
+spring.shardingsphere.datasource.ds1.password=gwssi
+
+# ds2 order库
+spring.shardingsphere.datasource.ds2.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds2.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds2.url=jdbc:mysql://127.0.0.1:3306/sharding_order?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds2.username=root
+spring.shardingsphere.datasource.ds2.password=gwssi
+
+
+# order库 表配置 专库转表
+spring.shardingsphere.sharding.tables.user_order.actual-data-nodes=ds2.user_order
+# 主键生成策略 SNOWFLAKE 雪花算法
+spring.shardingsphere.sharding.tables.user_order.key-generator.column=order_id
+spring.shardingsphere.sharding.tables.user_order.key-generator.type=SNOWFLAKE
+# 分片策略
+spring.shardingsphere.sharding.tables.user_order.table-strategy.inline.sharding-column=order_id
+spring.shardingsphere.sharding.tables.user_order.table-strategy.inline.algorithm-expression=user_order
+
+
+# user库 user_1表配置
+spring.shardingsphere.sharding.tables.user.actual-data-nodes=ds1.user_1
+# 主键生成策略 SNOWFLAKE 雪花算法
+spring.shardingsphere.sharding.tables.user.key-generator.column=id
+spring.shardingsphere.sharding.tables.user.key-generator.type=SNOWFLAKE
+# 分片策略
+spring.shardingsphere.sharding.tables.user.table-strategy.inline.sharding-column=id
+spring.shardingsphere.sharding.tables.user.table-strategy.inline.algorithm-expression=user_1
+
+
+# 配置 关联 公共表 实现多数据源 统一增加删除
+spring.shardingsphere.sharding.broadcast-tables=dict
+# 主键生成策略 SNOWFLAKE 雪花算法
+spring.shardingsphere.sharding.tables.dict.key-generator.column=dict_id
+spring.shardingsphere.sharding.tables.dict.key-generator.type=SNOWFLAKE
+
+
+#  控制台显示sql
+spring.shardingsphere.props.sql.show=true

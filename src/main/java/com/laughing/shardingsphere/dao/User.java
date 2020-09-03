@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Data
 public class User {
-    @TableId
     private Long id;
     private String name;
     private int age;

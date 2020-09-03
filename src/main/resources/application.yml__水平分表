@@ -1,3 +1,4 @@
+# 水平分表
 server:
   port: 8080
 
@@ -18,6 +19,7 @@ spring:
         username: root
         password: gwssi
 
+
     # 表配置
     sharding:
       tables:
@@ -25,21 +27,18 @@ spring:
           # 表名配置 user_1,user_2
           actual-data-nodes: ds1.user_$->{1..2}
           # 主键生成策略 SNOWFLAKE 雪花算法
-          key-generator-column-name: id
           key-generator:
             column: id
             type: SNOWFLAKE
           # 分片策略， id偶数user_1,id奇数user_2
-          table-startegy:
+          table-strategy:
             inline:
               sharding-column: id
-              algorithms-expression: user_$->{id % 2 + 1}
+              algorithm-expression: user_$->{id % 2 + 1}
     # 显示sql
     props:
       sql:
         show: true
-
-
 
 # 开启mybatis-plus
 mybatis-plus:
