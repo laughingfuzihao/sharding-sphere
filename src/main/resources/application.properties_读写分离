@@ -1,0 +1,30 @@
+# 读写分离
+# 一个实体类可对应两张表
+spring.main.allow-bean-definition-overriding=true
+# sharding 多数据源配置
+spring.shardingsphere.datasource.names=ds1,ds2
+
+# ds1 212Master
+spring.shardingsphere.datasource.ds1.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds1.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds1.url=jdbc:mysql://49.232.61.212:3306/sharding_1?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds1.username=root
+spring.shardingsphere.datasource.ds1.password=xxxxxxxxx
+
+# ds2 本地slave
+spring.shardingsphere.datasource.ds2.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds2.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds2.url=jdbc:mysql://127.0.0.1:3306/sharding_1?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+spring.shardingsphere.datasource.ds2.username=root
+spring.shardingsphere.datasource.ds2.password=gwssi
+
+# 主从逻辑  ds为统一的
+spring.shardingsphere.sharding.master-slave-rules.ds.master-data-source-name=ds1
+spring.shardingsphere.sharding.master-slave-rules.ds.slave-data-source-names=ds2
+
+# 表配置
+spring.shardingsphere.sharding.tables.user.actual-data-nodes=ds.user_1
+
+
+#  控制台显示sql
+spring.shardingsphere.props.sql.show=true

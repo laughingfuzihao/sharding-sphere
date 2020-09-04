@@ -1,0 +1,16 @@
+# 水平分表
+server:
+  port: 8081
+
+spring:
+  main:
+    # 一个实体类可对应两张表
+    allow-bean-definition-overriding: true
+  application:
+    name: Sharding-Sphere-JDBC
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3307/sharding_1?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
